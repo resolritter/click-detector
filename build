@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -xeu -o pipefail
+
+if &>/dev/null which dirname; then
+  dir="$(dirname "${BASH_SOURCE[0]}")"
+else
+  file_name="${BASH_SOURCE[0]##*/}}"
+  dir="${BASH_SOURCE[0]:: -${#file_name}}"
+fi
+
+gcc_args=(
+  -o click-detector
+  "$dir/main.c"
+)
+
+if [ "${1:-}" ]; then
+  echo "Building for target \"$1\""
+  case "${1:-}" in
+    x11)
+      gcc_args=(
+        -D CLICK_DETECTOR_X11
+        -lX11
+        "${gcc_args[@]}"
+      )
+    ;;
+    *)
+      >&2 echo "ERROR: Unknown target \"$1\""
+      exit 1
+    ;;
+  esac
+fi
+
+gcc "${gcc_args[@]}"
