@@ -67,7 +67,7 @@ jobs:
       - name: Run pre-commit
         run: pre-commit run --all-files --show-diff-on-failure --color=always
 
-  build-arch-linux-x11:
+  build-arch-linux:
     runs-on: ubuntu-20.04
     needs: lint
     steps:
@@ -83,20 +83,5 @@ jobs:
             sudo pacman --noconfirm -Syu libx11 gcc
             ./build x11
             ./click-detector --help
-
-  build-arch-linux-noX:
-    runs-on: ubuntu-20.04
-    needs: lint
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - uses: resolritter/docker-run-action@3e77f186b7a929ef010f183a9e24c0f9955ea609
-        with:
-          image: archlinux:base-devel
-          shell: bash
-          options: -v ${{ github.workspace }}:/work
-          run: |
-            cd /work
-            sudo pacman --noconfirm -Syu gcc
             ./build
             ./click-detector --help
