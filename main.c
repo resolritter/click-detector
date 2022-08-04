@@ -79,8 +79,6 @@ int main(int argc, char** argv) {
 			  was a click.
 			*/
 			if (ev[1] == 0 && ev[2] == 0) {
-				// got some mouse event without movement (b1 and b2 unchanged),
-				// interpret as a click
 				printf("got click, exiting\n%d %d %d", ev[0], ev[1], ev[2]);
 				break;
 			}
